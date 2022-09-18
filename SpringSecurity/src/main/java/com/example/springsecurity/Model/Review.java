@@ -2,19 +2,20 @@ package com.example.springsecurity.Model;
 
 import lombok.*;
 
-
 import javax.persistence.*;
-import java.util.List;
 
-@Entity
-@Getter
 @Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Role {
+@Entity
+public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String name;
 
+    private String comment;
+    @JoinColumn(name="user_id")
+    @ManyToOne
+    private AppUser user;
 }

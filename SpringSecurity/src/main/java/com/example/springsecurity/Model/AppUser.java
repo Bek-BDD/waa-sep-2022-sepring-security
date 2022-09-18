@@ -1,29 +1,38 @@
 package com.example.springsecurity.Model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
-
-@DiscriminatorColumn(name="user_type", discriminatorType = DiscriminatorType.INTEGER)
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@Entity
-@Getter
 @Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name="appuser")
 public class AppUser {
+
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String firstname;
     private String lastname;
     private String username;
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    private List<Role> roles;
+
+    @OneToMany(mappedBy = "user")
+    List<Review> reviews;
 
 
 
+
+    @OneToOne(cascade = CascadeType.PERSIST)
+    private Address address;
+
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    private List<Role>roles;
 }
