@@ -23,16 +23,14 @@ public class AppUser {
     private String username;
     private String password;
 
-
     @OneToMany(mappedBy = "user")
     List<Review> reviews;
-
-
-
 
     @OneToOne(cascade = CascadeType.PERSIST)
     private Address address;
 
     @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private List<Role>roles;
+
+
 }

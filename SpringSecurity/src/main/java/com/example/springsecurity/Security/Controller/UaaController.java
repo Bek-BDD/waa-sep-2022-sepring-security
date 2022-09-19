@@ -6,12 +6,10 @@ import com.example.springsecurity.Security.Model.LoginResponse;
 import com.example.springsecurity.Security.Model.RefreshToken;
 import com.example.springsecurity.Security.Service.UaaService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/uaa")
 public class UaaController {
     private UaaService uaaService;

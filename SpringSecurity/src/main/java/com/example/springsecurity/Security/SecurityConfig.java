@@ -52,6 +52,7 @@ public class SecurityConfig {
                 .antMatchers("/uaa/**").permitAll()
                 .antMatchers("/products").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
                 .antMatchers("/categories").access("hasRole('ROLE_ADMIN')")
+
               //  .antMatchers("/**/**").access("hasRole('ADMIN')")
 
 //                 .antMatchers(HttpMethod.GET,"/products").hasAuthority("GOLD")
