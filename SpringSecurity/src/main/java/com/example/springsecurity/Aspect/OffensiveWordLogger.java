@@ -6,18 +6,14 @@ import com.example.springsecurity.Model.AppUser;
 import com.example.springsecurity.Model.OffensiveWord;
 import com.example.springsecurity.Repository.AppUserRepo;
 import com.example.springsecurity.Repository.OffensiveWordRepo;
-import org.aopalliance.intercept.Joinpoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -54,11 +50,25 @@ public class OffensiveWordLogger {
              return result;
          }
          else{
-            //save each offensive word to the log ***** continue here ******
              UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
              AppUser user = appUserRepo.findAppUserByUsername(userDetails.getUsername());
 
+             for(String off: wordsfound){
+                 OffensiveWordLog offense = new OffensiveWordLog();
+                 offense.setWord(off);
+                 offense.setAppuserid(user.getId());
+                 offense.setTimestamp(LocalDateTime.now());
+                 offensiveWordLogRepo.save(offense);
+             }
              List<OffensiveWordLog> offenslogs=offensiveWordLogRepo.findOffensiveWordLoggerByAppuseridAndTimestampMinuteBefore(user.getId(),30);
+
+             if(offenslogs.size()>5){
+                 System.out.println("Maximum number of offensive word in 30 mins");
+             }
+             else{
+                 Object result =proceedingJoinPoint.proceed();
+                 return result;
+             }
 
          }
          return null;
